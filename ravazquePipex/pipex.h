@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:44:03 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/07 17:40:50 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:02:28 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 # define PIPEX_H
 
 # include "libft/libft.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
-# include <unistd.h>
 
 # define FILE "bash: no such file or directory: "
 # define COMMAND "bash: command not found: "

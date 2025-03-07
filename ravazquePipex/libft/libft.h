@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 20:31:32 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/07 18:44:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/07 19:04:11 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
 // ============================{ GET NEXT LINE }============================ //
 
