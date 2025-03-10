@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 20:31:32 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/03 16:56:15 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:21:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 # include <ctype.h>
 # include <stdio.h>
 # include <stddef.h>
-
+# include <fcntl.h>
+# include <errno.h>
+# include <sys/wait.h>
 
 int					ft_isalpha(int c);
 int					ft_isdigit(int c);

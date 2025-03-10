@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:34:50 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/04 20:27:06 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/10 16:06:29 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,23 @@ int	main(int argc, char const *argv[], char **envp)
     t_index	index;
 
     if(argc != 5)
-        ft_putstr_fd(ARGUMENTS, EXIT_FAILURE);
-    index.infile = argv[1];
-    index.outfile = argv[4];
-    index.in = open(index.infile, O_RDONLY);
+        return(ft_putstr_fd(ARGUMENTS, EXIT_FAILURE), EXIT_FAILURE);
+    indexinit(&index, argv);
+    setpath(&index, envp);
+    index.in = open(index.infile, O_RDONLY, 0644);
     if(index.in < 0)
+    {
         perror(index.infile);
+        freeindex(&index);
+        return(EXIT_FAILURE);
+    }
     index.out = open(index.outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
     if(index.out < 0)
     {
 		perror(index.outfile);
 		// pipex(&index, envp);
 		close(index.in);
+        freeindex(&index);
 		return (EXIT_FAILURE);
 	}
     // index.exit = pipex(&index, envp);
@@ -38,15 +43,16 @@ int	main(int argc, char const *argv[], char **envp)
 		close(index.in);
     if (index.out > 0)
         close(index.out);
+    freeindex(&index);
 	return (index.exit);
 }
 
-// =====================================
+// ==================================
 
-// int		in;
-// int		out;
-// const char	*infile;
-// const char	*outfile;
+// int          in
+// int          in
+// const char   *infile
+// const char   *outfile
 
-// =====================================
+// ==================================
 
