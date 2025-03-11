@@ -6,14 +6,14 @@
 #    By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 21:02:14 by ravazque          #+#    #+#              #
-#    Updated: 2025/03/04 18:50:50 by ravazque         ###   ########.fr        #
+#    Updated: 2025/03/10 17:42:29 by ravazque         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = pipex
 
 CC = cc
-# CFLAGS = -Wall -Wextra -Werror -g3 -Ilibft
+CFLAGS = -Wall -Wextra -Werror -g3 -Ilibft
 
 CFLAGS = -g3 -Ilibft
 

@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:44:03 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/10 15:29:38 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/10 18:34:26 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,28 +15,25 @@
 
 # include "libft/libft.h"
 
-# define FILE "bash: no such file or directory: "
-# define COMMAND "bash: command not found: "
-# define ARGUMENTS "Error: bad number of arguments\n"
-# define CHILD "child error"
-# define PIPE "pipe error"
-# define PATH "PATH="
-# define HERE_DOC "here_doc"
-# define TMP_FILE "/tmp/pipex_tmp"
+# define ARGUMENTS "Error: Número incorrecto de argumentos\n"
 
 typedef struct s_index
 {
-	int			i;
 	int			exit;
 	int			in;
 	int			out;
 	const char	*infile;
 	const char	*outfile;
-	const		**route;
+	char		**route;
+	char		*cmd1;
+	char		*cmd2;
 }				t_index;
 
-void indexinit(t_index *index, char *argv[]);
-void freeindex(t_index *index);
-void setpath(t_index *index, char **envp);
+void			indexinit(t_index *index, const char *argv[]);
+void			freeindex(t_index *index);
+void			setpath(t_index *index, char **envp);
+char			*find_executable(t_index *index, char *cmd);
+void			exec_cmd(t_index *index, char *cmd, char **envp);
+int				pipex(t_index *index, char **envp);
 
 #endif
