@@ -6,50 +6,42 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:05:41 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/11 21:29:34 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:07:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	pipex(t_index *index, char **envp)
+void	indexinit(t_index *index, const char *argv[])
 {
-	int		fd[2];
-	int		status1;
-	int		status2;
-	pid_t	pid1;
-	pid_t	pid2;
+	index->in = -1;
+	index->out = -1;
+	index->infile = argv[1];
+	index->outfile = argv[4];
+	index->route = NULL;
+	index->cmd1 = ft_strdup(argv[2]);
+	index->cmd2 = ft_strdup(argv[3]);
+	index->exit = EXIT_FAILURE;
+}
 
-	if (pipe(fd) == -1)
+void	freeindex(t_index *index)
+{
+	int	i;
+
+	i = 0;
+	if (index->route)
 	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
+		while (index->route[i])
+		{
+			free((void *)index->route[i]);
+			i++;
+		}
+		free((void *)index->route);
 	}
-	pid1 = fork();
-	if (pid1 == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pid1 == 0)
-		execute_child1(index, fd, envp);
-	pid2 = fork();
-	if (pid2 == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pid2 == 0)
-		execute_child2(index, fd, envp);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid1, &status1, 0);
-	waitpid(pid2, &status2, 0);
-	if (status1 != 0 && status2 == 0 && !index->cmd1[1])
-	{
-		return (WEXITSTATUS(status1));
-	}
-	return (WEXITSTATUS(status2));
+	if (index->cmd1)
+		free(index->cmd1);
+	if (index->cmd2)
+		free(index->cmd2);
 }
 
 static char	*ft_cleaner_aux(char *str, char remover)
@@ -95,18 +87,19 @@ char	*ft_cleaner(char *str, char *removers)
 	return (str);
 }
 
-void ft_clean_mem(char ***args)
+void	ft_clean_mem(char ***args)
 {
-    int i = 0;
+	int	i;
 
-    if (args == NULL || *args == NULL)
-        return;
-    while ((*args)[i] != NULL)
+	i = 0;
+	if (args == NULL || *args == NULL)
+		return ;
+	while ((*args)[i] != NULL)
 	{
-        free((*args)[i]);
-        (*args)[i] = NULL;
-        i++;
-    }
-    free(*args);
-    *args = NULL;
+		free((*args)[i]);
+		(*args)[i] = NULL;
+		i++;
+	}
+	free(*args);
+	*args = NULL;
 }

@@ -6,11 +6,38 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:52:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/11 21:24:34 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/12 12:51:35 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	open_files(t_index *index, const char *argv[])
+{
+	if (index->route == NULL && (ft_strchr(index->cmd1, ' ') == 1 || ft_strchr(index->cmd2, ' ') == 1))
+	{
+		ft_putstr_fd("Error respecting the flag without the PATH.", STDERR_FILENO);
+		freeindex(index);
+		return (EXIT_FAILURE);
+	}
+	index->out = open(index->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (index->out < 0)
+	{
+		perror(index->outfile);
+		return (-1);
+	}
+	if (argv[2][0] == '\0' || argv[3][0] == '\0')
+		return (close(index->out), freeindex(index), 2);
+	index->in = open(index->infile, O_RDONLY);
+	if (index->in < 0)
+	{
+		perror(index->infile);
+		index->in = open("/dev/null", O_RDONLY);
+		if (index->in < 0)
+			return (freeindex(index), EXIT_FAILURE);
+	}
+	return (0);
+}
 
 char	*find_executable(t_index *index, char *cmd)
 {
@@ -44,37 +71,20 @@ void	exec_cmd(t_index *index, char *cmd, char **envp)
 	args = ft_split(cmd, ' ');
 	if (!args || !args[0])
 	{
-		ft_clean_mem(&args);
-		ft_putstr_fd("Error: invalid arguments\n", 2);
-		exit(127);
+		return (ft_clean_mem(&args), ft_putstr_fd("Error: invalid arguments\n", 2), exit(127), (void)0);
 	}
 	while (args[++i])
 		args[i] = ft_cleaner(args[i], "\"\'");
 	path = find_executable(index, args[0]);
 	if (!path)
 	{
-		ft_putstr_fd("Command not found: ", 2);
-		ft_putstr_fd(args[0], 2);
-		ft_putchar_fd('\n', 2);
-		exit(127);
+		return (ft_putstr_fd("Command not found: ", 2), ft_putstr_fd(args[0], 2), ft_putchar_fd('\n', 2), ft_clean_mem(&args), exit(127), (void)0);
 	}
 	execve(path, args, envp);
 	perror("Exec failed");
 	free(path);
 	ft_clean_mem(&args);
 	exit(EXIT_FAILURE);
-}
-
-void	indexinit(t_index *index, const char *argv[])
-{
-	index->in = -1;
-	index->out = -1;
-	index->infile = argv[1];
-	index->outfile = argv[4];
-	index->route = NULL;
-	index->cmd1 = ft_strdup(argv[2]);
-	index->cmd2 = ft_strdup(argv[3]);
-	index->exit = EXIT_FAILURE;
 }
 
 void	setpath(t_index *index, char **envp)
@@ -96,24 +106,4 @@ void	setpath(t_index *index, char **envp)
 		}
 		i++;
 	}
-}
-
-void	freeindex(t_index *index)
-{
-	int	i;
-
-	i = 0;
-	if (index->route)
-	{
-		while (index->route[i])
-		{
-			free((void *)index->route[i]);
-			i++;
-		}
-		free((void *)index->route);
-	}
-	if (index->cmd1)
-		free(index->cmd1);
-	if (index->cmd2)
-		free(index->cmd2);
 }
