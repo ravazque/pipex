@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:52:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/12 12:51:35 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/12 13:46:41 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 int	open_files(t_index *index, const char *argv[])
 {
-	if (index->route == NULL && (ft_strchr(index->cmd1, ' ') == 1 || ft_strchr(index->cmd2, ' ') == 1))
+	if (index->route == NULL && (ft_strchr(index->cmd1, ' ') == 1
+			|| ft_strchr(index->cmd2, ' ') == 1))
 	{
-		ft_putstr_fd("Error respecting the flag without the PATH.", STDERR_FILENO);
+		ft_putstr_fd("Error respecting the flag without the PATH.",
+			STDERR_FILENO);
 		freeindex(index);
 		return (EXIT_FAILURE);
 	}
@@ -71,14 +73,17 @@ void	exec_cmd(t_index *index, char *cmd, char **envp)
 	args = ft_split(cmd, ' ');
 	if (!args || !args[0])
 	{
-		return (ft_clean_mem(&args), ft_putstr_fd("Error: invalid arguments\n", 2), exit(127), (void)0);
+		return (ft_clean_mem(&args), ft_putstr_fd("Error: invalid arguments\n",
+				2), exit(127), (void)0);
 	}
 	while (args[++i])
 		args[i] = ft_cleaner(args[i], "\"\'");
 	path = find_executable(index, args[0]);
 	if (!path)
 	{
-		return (ft_putstr_fd("Command not found: ", 2), ft_putstr_fd(args[0], 2), ft_putchar_fd('\n', 2), ft_clean_mem(&args), exit(127), (void)0);
+		return (ft_putstr_fd("Command not found: ", 2), ft_putstr_fd(args[0],
+				2), ft_putchar_fd('\n', 2), freeindex(index),
+			ft_clean_mem(&args), exit(127), (void)0);
 	}
 	execve(path, args, envp);
 	perror("Exec failed");
