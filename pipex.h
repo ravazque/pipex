@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:44:03 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/10 18:34:26 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:24:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define PIPEX_H
 
 # include "libft/libft.h"
-
-# define ARGUMENTS "Error: Número incorrecto de argumentos\n"
 
 typedef struct s_index
 {
@@ -35,5 +33,9 @@ void			setpath(t_index *index, char **envp);
 char			*find_executable(t_index *index, char *cmd);
 void			exec_cmd(t_index *index, char *cmd, char **envp);
 int				pipex(t_index *index, char **envp);
+char			*ft_cleaner(char *str, char *removers);
+void			execute_child1(t_index *index, int fd[2], char **envp);
+void			execute_child2(t_index *index, int fd[2], char **envp);
+void			ft_clean_mem(char ***args);
 
 #endif

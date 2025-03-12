@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:34:50 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/10 18:48:48 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/03/11 20:57:46 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,56 +32,32 @@ void	execute_child2(t_index *index, int fd[2], char **envp)
 	exec_cmd(index, index->cmd2, envp);
 }
 
-int	pipex(t_index *index, char **envp)                              // arreglar la longitud de la función
+int	open_files(t_index *index, const char *argv[])
 {
-	int		fd[2];
-	int		status1;
-	int		status2;
-	pid_t	pid1;
-	pid_t	pid2;
-
-	if (pipe(fd) == -1)
+	if (index->route == NULL && (ft_strchr(index->cmd1, ' ') == 1 || ft_strchr(index->cmd2, ' ') == 1))
 	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
+		ft_putstr_fd("Error respecting the flag without the PATH.", STDERR_FILENO);
+		freeindex(index);
+		return (EXIT_FAILURE);
 	}
-	pid1 = fork();
-	if (pid1 == -1)
+	index->out = open(index->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (index->out < 0)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		perror(index->outfile);
+		freeindex(index);
+		return (EXIT_FAILURE);
 	}
-	if (pid1 == 0)
-		execute_child1(index, fd, envp);
-	pid2 = fork();
-    if (pid2 == -1)
+	if (argv[2][0] == '\0' || argv[3][0] == '\0')
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		close(index->out);
+		freeindex(index);
+		return (2);
 	}
-	if (pid2 == 0)
-		execute_child2(index, fd, envp);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid1, &status1, 0);
-	waitpid(pid2, &status2, 0);
-	return (WEXITSTATUS(status2));
-}
-
-int	open_files(t_index *index)
-{
-    index->out = open(index->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-    if (index->out < 0)
-    {
-        perror(index->outfile);
-        freeindex(index);
-        return (EXIT_FAILURE);
-    }
 	index->in = open(index->infile, O_RDONLY);
 	if (index->in < 0)
 	{
 		perror(index->infile);
-        close(index->out);
+		close(index->out);
 		freeindex(index);
 		return (EXIT_FAILURE);
 	}
@@ -91,19 +67,26 @@ int	open_files(t_index *index)
 int	main(int argc, char const *argv[], char **envp)
 {
 	t_index	index;
+	int 	aux;
 
 	if (argc != 5)
-		return (ft_putstr_fd(ARGUMENTS, 2), EXIT_FAILURE);
+	{
+		ft_putstr_fd("\033[31mError: Invalid arguments\n\e[0m", 2);
+		ft_putstr_fd("Usage: ./pipex <infile> <cmd1> <cmd2> <outfile>\n", 2);
+		return (EXIT_FAILURE);
+	}
 	indexinit(&index, argv);
 	setpath(&index, envp);
-	if (open_files(&index) == EXIT_FAILURE)
+	aux = open_files(&index, argv);
+	if (aux == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	else if (aux == 2)
+		return(0);
 	index.exit = pipex(&index, envp);
 	if (index.in > 0)
 		close(index.in);
 	if (index.out > 0)
-		close(index.out);
-    
+		close(index.out);	
 	freeindex(&index);
 	return (index.exit);
 }

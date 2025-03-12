@@ -6,7 +6,7 @@
 #    By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 21:02:14 by ravazque          #+#    #+#              #
-#    Updated: 2025/03/10 17:42:29 by ravazque         ###   ########.fr        #
+#    Updated: 2025/03/11 21:31:00 by ravazque         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ CFLAGS = -g3 -Ilibft
 PIPEX_OBJS_DIR = pipexObjects
 LIBFT_OBJS_DIR = libftObjects
 
-SRC = pipex.c pipex_utils.c
+SRC = pipex.c pipex_utils.c pipex_aux.c
 PIPEX_OBJS = $(patsubst %.c, $(PIPEX_OBJS_DIR)/%.o, $(SRC))
 
 LIBFT_SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
@@ -35,8 +35,8 @@ LIBFT_OBJS = $(patsubst %.c, $(LIBFT_OBJS_DIR)/%.o, $(LIBFT_SRC))
 LIBFT_DIR = libft
 LIBFT = $(LIBFT_DIR)/libft.a
 
-GREEN = \033[1;32m
-LIGHT_RED = \033[1;91m
+GREEN = \033[32m
+LIGHT_RED = \033[31m
 RESET = \033[0m
 
 all: $(NAME)
