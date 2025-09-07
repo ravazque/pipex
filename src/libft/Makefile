@@ -6,7 +6,7 @@
 #    By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/03/03 23:26:01 by ravazque          #+#    #+#              #
-#    Updated: 2025/03/10 16:42:12 by ravazque         ###   ########.fr        #
+#    Updated: 2025/09/08 01:10:26 by ravazque         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror
 
-LIBFT_OBJS_DIR = ../libftObjects
+LIBFT_OBJS_DIR = ../../libftObjects
 
 SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
       ft_strlen.c ft_memset.c ft_bzero.c ft_memcpy.c ft_memmove.c ft_strlcpy.c \
@@ -35,7 +35,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	@ar rcs $(NAME) $(OBJS)
-	@echo "$(GREEN)[✔] libft compilada$(RESET)"
+	@echo -e "$(GREEN)[✔] libft compilada$(RESET)"
 
 $(LIBFT_OBJS_DIR)/%.o: %.c | $(LIBFT_OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
@@ -46,17 +46,17 @@ $(LIBFT_OBJS_DIR):
 clean:
 	@if [ -d "$(LIBFT_OBJS_DIR)" ]; then \
 		rm -rf $(LIBFT_OBJS_DIR); \
-		echo "$(LIGHT_RED)[✘] Objetos de libft eliminados$(RESET)"; \
+		echo -e "$(LIGHT_RED)[✘] Objetos de libft eliminados$(RESET)"; \
 	fi
 
 fclean:
 	@if [ -d "$(LIBFT_OBJS_DIR)" ]; then \
 		rm -rf $(LIBFT_OBJS_DIR); \
-		echo "$(LIGHT_RED)[✘] Objetos de libft eliminados$(RESET)"; \
+		echo -e "$(LIGHT_RED)[✘] Objetos de libft eliminados$(RESET)"; \
 	fi
 	@if [ -f "$(NAME)" ]; then \
 		rm -f $(NAME); \
-		echo "$(LIGHT_RED)[✘] Librería libft.a eliminada$(RESET)"; \
+		echo -e "$(LIGHT_RED)[✘] Librería libft.a eliminada$(RESET)"; \
 	fi
 
 re: 

@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:52:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/12 13:46:41 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/09/08 00:48:37 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 int	open_files(t_index *index, const char *argv[])
 {

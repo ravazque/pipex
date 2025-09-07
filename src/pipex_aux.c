@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 18:05:41 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/12 13:39:05 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/09/08 00:48:27 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 void	indexinit(t_index *index, const char *argv[])
 {

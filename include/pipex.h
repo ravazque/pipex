@@ -6,14 +6,14 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:44:03 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/12 12:31:28 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/09/08 00:47:57 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include "libft/libft.h"
+# include "../src/libft/libft.h"
 
 typedef struct s_index
 {

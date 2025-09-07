@@ -6,11 +6,11 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 16:34:50 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/12 13:32:11 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/09/08 00:48:39 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 static void	execute_child1(t_index *index, int fd[2], char **envp)
 {
