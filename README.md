@@ -139,12 +139,13 @@ make re
 ```
 pipex/
 ├──┬ include/
-│  └── pipex.h                          # Header file with prototypes and definitions
+│  └── pipex.h                          # Header file with prototypes and structures
 ├──┬ src/
+│  ├──┬ libft/                          # Libft functions
+│  │  └── *.c
 │  ├── pipex.c                          # Main program implementation
-│  ├── pipex_utils.c                    # Utility functions for path resolution
-│  ├── pipex_process.c                  # Process management functions
-│  └── pipex_errors.c                   # Error handling functions
+│  ├── pipex_aux.c                      # Useful functions for route resolution and program management
+│  └── pipex_utils.c                    # Opening files and executing commands
 ├── Makefile                            # Compilation rules
 └── README.md                           # Project documentation
 ```
