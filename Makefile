@@ -8,7 +8,7 @@ VPATH = $(SRCDIR) $(LIBFT_DIR)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror -Ilibft
-CFLAGS = -g3 -Ilibft
+CFLAGS = -Ilibft
 CFLAGS += -I$(INCDIR) -I$(LIBFT_DIR)
 
 PIPEX_OBJS_DIR = pipexObjects
