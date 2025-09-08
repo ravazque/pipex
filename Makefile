@@ -7,7 +7,7 @@ LIBFT_DIR = $(SRCDIR)/libft
 VPATH = $(SRCDIR) $(LIBFT_DIR)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g3 -Ilibft
+CFLAGS = -Wall -Wextra -Werror -Ilibft
 CFLAGS = -g3 -Ilibft
 CFLAGS += -I$(INCDIR) -I$(LIBFT_DIR)
 
