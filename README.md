@@ -1,6 +1,5 @@
-<p align="center">
-  <img src="https://github.com/ayogun/42-project-badges/raw/main/badges/pipexe.png" alt="Pipex Badge" width="150" height="150">
-</p>
+
+# pipex
 
 ## 📖 About
 
@@ -167,7 +166,7 @@ The pipex project teaches advanced UNIX system programming concepts:
 
 ## ⚙️ Technical Specifications
 
-- **Language**: C (C99 standard)
+- **Language**: C (C90 standard)
 - **Compiler**: cc with flags `-Wall -Wextra -Werror`
 - **System Calls**: pipe(), fork(), execve(), dup2(), close(), wait(), access()
 - **Dependencies**: Only standard C library and system calls
