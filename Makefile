@@ -2,17 +2,16 @@
 MAKEFLAGS += --no-print-directory
 
 NAME = pipex
-NAME_BONUS = pipex
+NAME_BONUS = pipex_bonus
 
 SRCDIR = src
 INCDIR = include
-LIBFT_DIR = $(SRCDIR)/libft
+LIBFT_DIR = $(SRCDIR)/aux_libft
 VPATH = $(SRCDIR) $(LIBFT_DIR)
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -Ilibft
-CFLAGS = -Ilibft
-CFLAGS += -I$(INCDIR) -I$(LIBFT_DIR)
+CFLAGS = -Wall -Wextra -Werror
+CFLAGS += -I$(INCDIR) -I$(LIBFT_DIR)/include
 
 OBJS_DIR = objects
 PIPEX_OBJS_DIR = objects/pipexObjects
@@ -43,14 +42,8 @@ RESET = \033[0m
 all: $(NAME)
 
 $(NAME): $(LIBFT) $(PIPEX_OBJS)
-	@if [ ! -f $(PIPEX_OBJS_DIR)/%.o ]; then \
-		$(CC) $(CFLAGS) $(PIPEX_OBJS) $(LIBFT) -o $(NAME) > /dev/null 2>&1; \
-		echo -e "$(GREEN)[ ✔ ] pipex compilado$(RESET)"; \
-	fi
-	@if [ ! -f $(NAME) ]; then \
-		$(CC) $(CFLAGS) $(PIPEX_OBJS) $(LIBFT) -o $(NAME) > /dev/null 2>&1; \
-		echo -e "$(GREEN)[ ✔ ] pipex compilado$(RESET)"; \
-	fi
+	@$(CC) $(CFLAGS) $(PIPEX_OBJS) $(LIBFT) -o $(NAME) > /dev/null 2>&1
+	@echo -e "$(GREEN)[ ✔ ] pipex compilado$(RESET)"
 
 $(LIBFT): $(LIBFT_OBJS)
 	@echo -e "$(GREEN)[ ✔ ] libft completada$(RESET)"
@@ -59,7 +52,7 @@ $(LIBFT): $(LIBFT_OBJS)
 $(PIPEX_OBJS_DIR)/%.o: %.c | $(PIPEX_OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null 2>&1
 
-$(LIBFT_OBJS_DIR)/%.o: $(LIBFT_DIR)/%.c | $(LIBFT_OBJS_DIR)
+$(LIBFT_OBJS_DIR)/%.o: $(LIBFT_DIR)/src/%.c | $(LIBFT_OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@ > /dev/null 2>&1
 
 $(PIPEX_OBJS_DIR):
@@ -86,8 +79,8 @@ clean:
 	fi
 
 fclean:
-	@if [ -f $(NAME) ]; then \
-		rm -f $(NAME) > /dev/null 2>&1; \
+	@if [ -f $(NAME) ] || [ -f $(NAME_BONUS) ]; then \
+		rm -f $(NAME) $(NAME_BONUS) > /dev/null 2>&1; \
 		echo -e "$(LIGHT_RED)[ ✘ ] Archivos de ejecución existentes eliminados$(RESET)"; \
 	fi
 	@make clean > /dev/null 2>&1
@@ -95,14 +88,10 @@ fclean:
 
 re: fclean all
 
-bonus: $(LIBFT) $(PIPEX_OBJS_BONUS)
-	@if [ ! -f $(PIPEX_OBJS_DIR)/%.o ]; then \
-		$(CC) $(CFLAGS) $(PIPEX_OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS) > /dev/null 2>&1; \
-		echo -e "$(GREEN)[ ✔ ] pipex bonus compilado$(RESET)"; \
-	fi
-	@if [ ! -f $(NAME_BONUS) ]; then \
-		$(CC) $(CFLAGS) $(PIPEX_OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS) > /dev/null 2>&1; \
-		echo -e "$(GREEN)[ ✔ ] pipex bonus compilado$(RESET)"; \
-	fi
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(LIBFT) $(PIPEX_OBJS_BONUS)
+	@$(CC) $(CFLAGS) $(PIPEX_OBJS_BONUS) $(LIBFT) -o $(NAME_BONUS) > /dev/null 2>&1
+	@echo -e "$(GREEN)[ ✔ ] pipex_bonus compilado$(RESET)"
 
 .PHONY: all clean fclean re bonus

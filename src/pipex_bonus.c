@@ -90,6 +90,7 @@ void	execute_pipeline(t_pipex *pipex, char **envp)
 		exit_status = WEXITSTATUS(status);
 		i++;
 	}
+	(void)exit_status;
 }
 
 int	main(int argc, char **argv, char **envp)

@@ -13,7 +13,7 @@
 #ifndef PIPEX_BONUS_H
 # define PIPEX_BONUS_H
 
-# include "../src/libft/libft.h"
+# include "../src/aux_libft/include/libft.h"
 
 typedef struct s_pipex
 {

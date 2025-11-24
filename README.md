@@ -3,9 +3,9 @@
 
 ## 📖 About
 
-"pipex" is a project at 42 Madrid that involves recreating the shell pipe functionality (`|`) and redirection operators (`<`, `>`) in C. This project introduces process management, inter-process communication, file descriptors manipulation, and teaches how to handle command execution in a systematic way.
+"pipex" is a project at 42 Madrid that involves recreating the shell pipe functionality (`|`) and redirection operators (`<`, `>`, `<<`) in C. This project introduces process management, inter-process communication, file descriptors manipulation, and teaches how to handle command execution in a systematic way.
 
-The goal is to implement a program that mimics the behavior of shell pipes, taking an input file, executing two commands in sequence where the output of the first becomes the input of the second, and writing the final result to an output file.
+The goal is to implement a program that mimics the behavior of shell pipes, taking an input file, executing commands in sequence where the output of each becomes the input of the next, and writing the final result to an output file. The bonus part extends this functionality to support multiple pipes and here_doc functionality.
 
 ## 🎯 Objectives
 
@@ -98,6 +98,39 @@ These system calls are essential for implementing **pipex**, as they allow proce
 
 </details>
 
+<details>
+<summary><strong>Bonus Requirements</strong></summary>
+
+### Program Behavior
+
+The bonus version supports multiple pipes and here_doc functionality:
+
+- **Multiple pipes:** `./pipex_bonus infile cmd1 cmd2 cmd3 ... cmdN outfile`
+- **Equivalent shell command:** `< infile cmd1 | cmd2 | cmd3 | ... | cmdN > outfile`
+- **Here_doc mode:** `./pipex_bonus here_doc LIMITER cmd1 cmd2 outfile`
+- **Equivalent shell command:** `cmd1 << LIMITER | cmd2 >> outfile`
+
+### Examples
+
+```bash
+# Multiple pipes example
+./pipex_bonus infile "ls -l" "grep a" "wc -l" outfile
+# Equivalent to: < infile ls -l | grep a | wc -l > outfile
+
+# Here_doc example
+./pipex_bonus here_doc EOF "grep a" "wc -l" outfile
+# Equivalent to: grep a << EOF | wc -l >> outfile
+```
+
+### Features
+
+- **Dynamic pipe creation**: Supports any number of commands
+- **Here_doc support**: Reads from stdin until limiter is found
+- **Append mode**: When using here_doc, output file is opened in append mode
+- **Robust error handling**: Proper cleanup of file descriptors and pipes
+
+</details>
+
 ## 🚀 Installation & Structure
 
 <details>
@@ -110,20 +143,29 @@ These system calls are essential for implementing **pipex**, as they allow proce
 git clone https://github.com/ravazque/pipex.git
 cd pipex
 
-# Compile the program
+# Compile the mandatory program
 make
+
+# Compile the bonus program
+make bonus
 
 # Clean object files
 make clean
 
-# Clean everything including executable
+# Clean everything including executables
 make fclean
 
 # Recompile everything
 make re
 
-# Run the program
+# Run the mandatory program
 ./pipex infile "command1" "command2" outfile
+
+# Run the bonus program (multiple pipes)
+./pipex_bonus infile "cmd1" "cmd2" "cmd3" outfile
+
+# Run the bonus program (here_doc)
+./pipex_bonus here_doc LIMITER "cmd1" "cmd2" outfile
 ```
 
 <br>
@@ -138,13 +180,20 @@ make re
 ```
 pipex/
 ├──┬ include/
-│  └── pipex.h                          # Header file with prototypes and structures
+│  ├── pipex.h                          # Header file for mandatory part
+│  └── pipex_bonus.h                    # Header file for bonus part
 ├──┬ src/
-│  ├──┬ libft/                          # Libft functions
-│  │  └── *.c
-│  ├── pipex.c                          # Main program implementation
-│  ├── pipex_aux.c                      # Useful functions for route resolution and program management
-│  └── pipex_utils.c                    # Opening files and executing commands
+│  ├──┬ aux_libft/                      # Libft auxiliary library
+│  │  ├──┬ include/
+│  │  │  └── libft.h                    # Libft header
+│  │  └──┬ src/
+│  │     └── *.c                        # Libft functions
+│  ├── pipex.c                          # Main program (mandatory)
+│  ├── pipex_aux.c                      # Auxiliary functions (mandatory)
+│  ├── pipex_utils.c                    # Utility functions (mandatory)
+│  ├── pipex_bonus.c                    # Main program (bonus)
+│  ├── pipex_aux_bonus.c                # Auxiliary functions (bonus)
+│  └── pipex_utils_bonus.c              # Utility functions (bonus)
 ├── Makefile                            # Compilation rules
 └── README.md                           # Project documentation
 ```
@@ -163,14 +212,16 @@ The pipex project teaches advanced UNIX system programming concepts:
 - **Command Execution**: Learning to resolve command paths and execute programs
 - **Error Handling**: Proper management of system call failures and edge cases
 - **UNIX Philosophy**: Understanding how shell pipes work under the hood
+- **Multiple Pipes (Bonus)**: Managing dynamic pipe creation for N commands
+- **Here_doc Implementation (Bonus)**: Reading from stdin with delimiter handling
+- **Resource Management**: Proper cleanup of multiple file descriptors and processes
 
 ## ⚙️ Technical Specifications
 
 - **Language**: C (C90 standard)
 - **Compiler**: cc with flags `-Wall -Wextra -Werror`
-- **System Calls**: pipe(), fork(), execve(), dup2(), close(), wait(), access()
+- **System Calls**: pipe(), fork(), execve(), dup2(), close(), wait(), access(), open(), read(), write(), unlink()
 - **Dependencies**: Only standard C library and system calls
-- **Platform**: UNIX-like systems (Linux, macOS)
 - **Memory Management**: Proper cleanup of resources and file descriptors
 - **Process Handling**: Parent-child process synchronization
 
