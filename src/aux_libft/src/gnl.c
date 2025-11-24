@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:34:42 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 15:48:43 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:53:05 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ static char	*read_until_newline(int fd, char **buff)
 		if (!*buff)
 			return (free(tmp_buffer), NULL);
 	}
-	free(tmp_buffer);
-	return (*buff);
+	return (free(tmp_buffer), *buff);
 }
 
 static char	*g_buff[MAX_FD];
@@ -116,7 +115,8 @@ char	*get_next_line(int fd)
 
 	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
 		return (free(g_buff[fd]), g_buff[fd] = NULL, NULL);
-	if (!read_until_newline(fd, &g_buff[fd]) || (g_buff[fd] && *g_buff[fd] == '\0'))
+	if (!read_until_newline(fd, &g_buff[fd]) || (g_buff[fd]
+			&& *g_buff[fd] == '\0'))
 		return (free(g_buff[fd]), g_buff[fd] = NULL, NULL);
 	line = extract_line(g_buff[fd]);
 	if (!line)

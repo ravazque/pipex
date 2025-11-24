@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/23 00:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:49:10 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct s_pipex
 	char		**cmds;
 	char		**route;
 	char		*limiter;
+	int			i;
 }				t_pipex;
 
 void			init_pipex(t_pipex *pipex, int argc, char **argv);

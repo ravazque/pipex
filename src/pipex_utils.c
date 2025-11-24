@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:52:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/09/08 00:48:37 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:48:18 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,8 @@ int	open_files(t_index *index, const char *argv[])
 	if (index->route == NULL && (ft_strchr(index->cmd1, ' ') == 1
 			|| ft_strchr(index->cmd2, ' ') == 1))
 	{
-		ft_putstr_fd("Error respecting the flag without the PATH.",
-			STDERR_FILENO);
-		freeindex(index);
-		return (EXIT_FAILURE);
+		ft_putstr_fd("Error respecting the flag without the PATH.", 2);
+		return (freeindex(index), EXIT_FAILURE);
 	}
 	if (argv[2][0] == '\0' || argv[3][0] == '\0')
 		return (2);

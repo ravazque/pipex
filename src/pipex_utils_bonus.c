@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/23 00:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:46:53 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ void	open_files(t_pipex *pipex, char **argv, int argc)
 {
 	if (pipex->here_doc)
 	{
-		pipex->outfile = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND,
-				0644);
+		pipex->outfile = open(argv[argc - 1], 01 | 0100 | 02000, 0644);
 		if (pipex->outfile < 0)
 		{
 			perror(argv[argc - 1]);

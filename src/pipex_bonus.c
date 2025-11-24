@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/23 00:00:00 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 23:50:50 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,16 @@ void	execute_pipeline(t_pipex *pipex, char **envp)
 {
 	int		pipefd[2];
 	int		prev_fd;
-	int		i;
 	pid_t	pid;
 	int		status;
 	int		exit_status;
 
-	i = 0;
+	pipex->i = 0;
 	prev_fd = -1;
 	exit_status = 0;
-	while (i < pipex->cmd_count)
+	while (pipex->i < pipex->cmd_count)
 	{
-		if (i < pipex->cmd_count - 1)
+		if (pipex->i < pipex->cmd_count - 1)
 		{
 			if (pipe(pipefd) == -1)
 			{
@@ -72,23 +71,23 @@ void	execute_pipeline(t_pipex *pipex, char **envp)
 				dup2(prev_fd, STDIN_FILENO);
 				close(prev_fd);
 			}
-			execute_cmd_child(pipex, envp, i, pipefd);
+			execute_cmd_child(pipex, envp, pipex->i, pipefd);
 		}
 		if (prev_fd != -1)
 			close(prev_fd);
-		if (i < pipex->cmd_count - 1)
+		if (pipex->i < pipex->cmd_count - 1)
 		{
 			close(pipefd[1]);
 			prev_fd = pipefd[0];
 		}
-		i++;
+		pipex->i++;
 	}
-	i = 0;
-	while (i < pipex->cmd_count)
+	pipex->i = 0;
+	while (pipex->i < pipex->cmd_count)
 	{
 		wait(&status);
 		exit_status = WEXITSTATUS(status);
-		i++;
+		pipex->i++;
 	}
 	(void)exit_status;
 }
