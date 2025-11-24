@@ -22,20 +22,22 @@ int	open_files(t_index *index, const char *argv[])
 		freeindex(index);
 		return (EXIT_FAILURE);
 	}
-	index->out = open(index->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (index->out < 0)
-	{
-		perror(index->outfile);
-		return (-1);
-	}
 	if (argv[2][0] == '\0' || argv[3][0] == '\0')
-		return (close(index->out), freeindex(index), 2);
+		return (2);
 	index->in = open(index->infile, O_RDONLY);
 	if (index->in < 0)
 	{
 		perror(index->infile);
 		index->in = open("/dev/null", O_RDONLY);
 		if (index->in < 0)
+			return (freeindex(index), EXIT_FAILURE);
+	}
+	index->out = open(index->outfile, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (index->out < 0)
+	{
+		perror(index->outfile);
+		index->out = open("/dev/null", O_WRONLY);
+		if (index->out < 0)
 			return (freeindex(index), EXIT_FAILURE);
 	}
 	return (0);
@@ -74,7 +76,7 @@ void	exec_cmd(t_index *index, char *cmd, char **envp)
 	if (!args || !args[0])
 	{
 		return (ft_clean_mem(&args), ft_putstr_fd("Error: invalid arguments\n",
-				2), exit(127), (void)0);
+				2), freeindex(index), exit(127), (void)0);
 	}
 	while (args[++i])
 		args[i] = ft_cleaner(args[i], "\"\'");

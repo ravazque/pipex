@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/22 18:34:42 by ravazque          #+#    #+#             */
-/*   Updated: 2025/03/10 16:41:40 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/24 15:48:43 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,15 @@ static char	*update_buffer(char *buffer, ssize_t *flag)
 static char	*read_until_newline(int fd, char **buff)
 {
 	char	*tmp_buffer;
+	char	*old_buff;
 	ssize_t	bytes_read;
 
+	if (!*buff)
+	{
+		*buff = ft_strdup("");
+		if (!*buff)
+			return (NULL);
+	}
 	tmp_buffer = (char *)malloc(BUFFER_SIZE + 1);
 	if (!tmp_buffer)
 		return (free(*buff), *buff = NULL, NULL);
@@ -81,7 +88,9 @@ static char	*read_until_newline(int fd, char **buff)
 		if (bytes_read < 0)
 			return (free(tmp_buffer), free(*buff), *buff = NULL, NULL);
 		tmp_buffer[bytes_read] = '\0';
+		old_buff = *buff;
 		*buff = ft_strjoin(*buff, tmp_buffer);
+		free(old_buff);
 		if (!*buff)
 			return (free(tmp_buffer), NULL);
 	}
@@ -89,21 +98,31 @@ static char	*read_until_newline(int fd, char **buff)
 	return (*buff);
 }
 
+static char	*g_buff[MAX_FD];
+
+void	clear_gnl_buffer(int fd)
+{
+	if (fd >= 0 && fd < MAX_FD && g_buff[fd])
+	{
+		free(g_buff[fd]);
+		g_buff[fd] = NULL;
+	}
+}
+
 char	*get_next_line(int fd)
 {
-	static char	*buff[MAX_FD];
 	char		*line;
 	ssize_t		flag;
 
 	if (fd < 0 || fd >= MAX_FD || BUFFER_SIZE <= 0)
-		return (free(buff[fd]), buff[fd] = NULL, NULL);
-	if (!read_until_newline(fd, &buff[fd]) || (buff[fd] && *buff[fd] == '\0'))
-		return (free(buff[fd]), buff[fd] = NULL, NULL);
-	line = extract_line(buff[fd]);
+		return (free(g_buff[fd]), g_buff[fd] = NULL, NULL);
+	if (!read_until_newline(fd, &g_buff[fd]) || (g_buff[fd] && *g_buff[fd] == '\0'))
+		return (free(g_buff[fd]), g_buff[fd] = NULL, NULL);
+	line = extract_line(g_buff[fd]);
 	if (!line)
-		return (free(buff[fd]), buff[fd] = NULL, NULL);
-	buff[fd] = update_buffer(buff[fd], &flag);
-	if (!buff[fd] && flag == 1)
+		return (free(g_buff[fd]), g_buff[fd] = NULL, NULL);
+	g_buff[fd] = update_buffer(g_buff[fd], &flag);
+	if (!g_buff[fd] && flag == 1)
 		return (free(line), NULL);
 	return (line);
 }

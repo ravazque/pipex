@@ -34,8 +34,6 @@ static void	execute_child2(t_index *index, int fd[2], char **envp)
 
 static int	pipesandchild1(t_index *index, char **envp, int fd[2], pid_t *pid1)
 {
-	int	status1;
-
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
@@ -49,11 +47,6 @@ static int	pipesandchild1(t_index *index, char **envp, int fd[2], pid_t *pid1)
 	}
 	if (*pid1 == 0)
 		execute_child1(index, fd, envp);
-	if (index->out == -1)
-	{
-		waitpid(*pid1, &status1, 0);
-		return (EXIT_FAILURE);
-	}
 	return (0);
 }
 
@@ -65,8 +58,7 @@ static int	pipex(t_index *index, char **envp)
 	pid_t	pid1;
 	pid_t	pid2;
 
-	if (pipesandchild1(index, envp, fd, &pid1) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
+	pipesandchild1(index, envp, fd, &pid1);
 	pid2 = fork();
 	if (pid2 == -1)
 	{
@@ -77,11 +69,12 @@ static int	pipex(t_index *index, char **envp)
 		execute_child2(index, fd, envp);
 	close(fd[0]);
 	close(fd[1]);
+	close(index->in);
+	close(index->out);
 	waitpid(pid1, &status1, 0);
 	waitpid(pid2, &status2, 0);
-	if (status1 != 0 && status2 == 0 && !index->cmd1[1])
-		return (WEXITSTATUS(status1));
-	return (WEXITSTATUS(status2));
+	freeindex(index);
+	exit(WEXITSTATUS(status2));
 }
 
 int	main(int argc, char const *argv[], char **envp)
@@ -101,12 +94,10 @@ int	main(int argc, char const *argv[], char **envp)
 	if (aux == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	else if (aux == 2)
-		return (0);
-	index.exit = pipex(&index, envp);
-	if (index.in > 0)
-		close(index.in);
-	if (index.out > 0)
-		close(index.out);
-	freeindex(&index);
-	return (index.exit);
+	{
+		freeindex(&index);
+		return (127);
+	}
+	pipex(&index, envp);
+	return (0);
 }
