@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*   pipex_pipeline_bonus.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 23:50:50 by ravazque         ###   ########.fr       */
+/*   Created: 2025/11/24 00:00:00 by ravazque          #+#    #+#             */
+/*   Updated: 2025/11/24 23:59:59 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,42 +37,60 @@ static void	execute_cmd_child(t_pipex *pipex, char **envp, int i, int pipefd[2])
 	exec_cmd(pipex, pipex->cmds[i], envp);
 }
 
+static void	create_process(t_pipex *pipex, char **envp,
+		int *pipefd, int prev_fd)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		exit(EXIT_FAILURE);
+	}
+	if (pid == 0)
+	{
+		if (prev_fd != -1)
+		{
+			dup2(prev_fd, STDIN_FILENO);
+			close(prev_fd);
+		}
+		execute_cmd_child(pipex, envp, pipex->i, pipefd);
+	}
+}
+
+static int	wait_all_processes(t_pipex *pipex)
+{
+	int	status;
+	int	exit_status;
+	int	j;
+
+	exit_status = 0;
+	j = 0;
+	while (j < pipex->cmd_count)
+	{
+		wait(&status);
+		exit_status = WEXITSTATUS(status);
+		j++;
+	}
+	return (exit_status);
+}
+
 void	execute_pipeline(t_pipex *pipex, char **envp)
 {
 	int		pipefd[2];
 	int		prev_fd;
-	pid_t	pid;
-	int		status;
-	int		exit_status;
 
 	pipex->i = 0;
 	prev_fd = -1;
-	exit_status = 0;
 	while (pipex->i < pipex->cmd_count)
 	{
-		if (pipex->i < pipex->cmd_count - 1)
+		if (pipex->i < pipex->cmd_count - 1 && pipe(pipefd) == -1)
 		{
-			if (pipe(pipefd) == -1)
-			{
-				perror("pipe");
-				exit(EXIT_FAILURE);
-			}
-		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
+			perror("pipe");
 			exit(EXIT_FAILURE);
 		}
-		if (pid == 0)
-		{
-			if (prev_fd != -1)
-			{
-				dup2(prev_fd, STDIN_FILENO);
-				close(prev_fd);
-			}
-			execute_cmd_child(pipex, envp, pipex->i, pipefd);
-		}
+		create_process(pipex, envp, pipefd, prev_fd);
 		if (prev_fd != -1)
 			close(prev_fd);
 		if (pipex->i < pipex->cmd_count - 1)
@@ -82,38 +100,5 @@ void	execute_pipeline(t_pipex *pipex, char **envp)
 		}
 		pipex->i++;
 	}
-	pipex->i = 0;
-	while (pipex->i < pipex->cmd_count)
-	{
-		wait(&status);
-		exit_status = WEXITSTATUS(status);
-		pipex->i++;
-	}
-	(void)exit_status;
-}
-
-int	main(int argc, char **argv, char **envp)
-{
-	t_pipex	pipex;
-
-	if (argc < 5)
-	{
-		ft_putstr_fd("\033[31mError: Invalid arguments\n\e[0m", 2);
-		ft_putstr_fd("Usage: ./pipex <file1> <cmd1> <cmd2> ... <file2>\n", 2);
-		ft_putstr_fd("       ./pipex here_doc <LIMITER> <cmd> ... <file>\n",
-			2);
-		return (EXIT_FAILURE);
-	}
-	init_pipex(&pipex, argc, argv);
-	setpath(&pipex, envp);
-	open_files(&pipex, argv, argc);
-	if (pipex.here_doc)
-		handle_here_doc(&pipex);
-	execute_pipeline(&pipex, envp);
-	if (pipex.infile > 0)
-		close(pipex.infile);
-	if (pipex.outfile > 0)
-		close(pipex.outfile);
-	free_pipex(&pipex);
-	return (0);
+	(void)wait_all_processes(pipex);
 }

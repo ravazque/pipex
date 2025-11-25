@@ -185,15 +185,22 @@ pipex/
 ├──┬ src/
 │  ├──┬ aux_libft/                      # Libft auxiliary library
 │  │  ├──┬ include/
-│  │  │  └── libft.h                    # Libft header
+│  │  │  └── libft.h                    # Libft header (includes GNL)
 │  │  └──┬ src/
-│  │     └── *.c                        # Libft functions
-│  ├── pipex.c                          # Main program (mandatory)
-│  ├── pipex_aux.c                      # Auxiliary functions (mandatory)
-│  ├── pipex_utils.c                    # Utility functions (mandatory)
-│  ├── pipex_bonus.c                    # Main program (bonus)
-│  ├── pipex_aux_bonus.c                # Auxiliary functions (bonus)
-│  └── pipex_utils_bonus.c              # Utility functions (bonus)
+│  │     ├── *.c                        # Libft functions
+│  │     ├── gnl.c                      # Get Next Line
+│  │     └── gnl_utils.c                # GNL helper functions
+│  ├──┬ bonus/
+│  │  ├── pipex_bonus.c                 # Main program
+│  │  ├── pipex_aux_bonus.c             # Auxiliary functions
+│  │  ├── pipex_utils_bonus.c           # Utility functions
+│  │  ├── pipex_init_bonus.c            # Initialization functions
+│  │  ├── pipex_exec_bonus.c            # Execution functions
+│  │  ├── pipex_heredoc_bonus.c         # Here_doc implementation
+│  │  └── pipex_pipeline_bonus.c        # Pipeline management
+│  ├── pipex.c                          # Main program
+│  ├── pipex_aux.c                      # Auxiliary functions
+│  └── pipex_utils.c                    # Utility functions
 ├── Makefile                            # Compilation rules
 └── README.md                           # Project documentation
 ```

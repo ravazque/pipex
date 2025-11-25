@@ -32,8 +32,10 @@
 
 // ============================{ GET NEXT LINE }============================ //
 
-char	*get_next_line(int fd);
-void	clear_gnl_buffer(int fd);
+char	*get_next_line(int fd, char **static_buffer);
+char	*extract_line(char *buffer);
+char	*update_buffer(char *buffer, ssize_t *flag);
+char	*read_until_newline(int fd, char **buff);
 
 // ============================{ LIBFT PART 1 }============================= //
 

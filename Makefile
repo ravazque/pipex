@@ -5,9 +5,10 @@ NAME = pipex
 NAME_BONUS = pipex_bonus
 
 SRCDIR = src
+SRCDIRBNS = src/bonus
 INCDIR = include
 LIBFT_DIR = $(SRCDIR)/aux_libft
-VPATH = $(SRCDIR) $(LIBFT_DIR)
+VPATH = $(SRCDIR) $(SRCDIRBNS) $(LIBFT_DIR)
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
@@ -20,7 +21,9 @@ LIBFT_OBJS_DIR = objects/libftObjects
 SRC = pipex.c pipex_utils.c pipex_aux.c
 PIPEX_OBJS = $(patsubst %.c, $(PIPEX_OBJS_DIR)/%.o, $(SRC))
 
-SRC_BONUS = pipex_bonus.c pipex_utils_bonus.c pipex_aux_bonus.c
+SRC_BONUS = pipex_bonus.c pipex_utils_bonus.c pipex_aux_bonus.c \
+            pipex_init_bonus.c pipex_exec_bonus.c pipex_heredoc_bonus.c \
+            pipex_pipeline_bonus.c
 PIPEX_OBJS_BONUS = $(patsubst %.c, $(PIPEX_OBJS_DIR)/%.o, $(SRC_BONUS))
 
 LIBFT_SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
@@ -29,7 +32,7 @@ LIBFT_SRC = ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c ft_isprint.c \
             ft_memchr.c ft_memcmp.c ft_strnstr.c ft_atoi.c ft_calloc.c ft_strdup.c \
             ft_substr.c ft_strjoin.c ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c \
             ft_striteri.c ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
-            gnl.c
+            gnl.c gnl_utils.c
 
 LIBFT_OBJS = $(patsubst %.c, $(LIBFT_OBJS_DIR)/%.o, $(LIBFT_SRC))
 
