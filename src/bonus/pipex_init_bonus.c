@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 23:45:38 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/28 18:41:04 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	init_pipex_hd(t_pipex *pipex, int argc, char **argv)
 		pipex->here_doc = 1;
 		pipex->limiter = argv[2];
 		pipex->cmd_count = argc - 4;
+		if (argc != 6)
+			exit(EXIT_FAILURE);
 		return (3);
 	}
 	else
