@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/28 18:41:04 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/28 18:42:37 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,3 +52,5 @@ void	init_pipex(t_pipex *pipex, int argc, char **argv)
 	}
 	pipex->cmds[i] = NULL;
 }
+
+// If heredoc is being used, pipex can only be used as a single pipe mode.
