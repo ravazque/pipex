@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/28 18:42:37 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/29 17:42:52 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ static int	init_pipex_hd(t_pipex *pipex, int argc, char **argv)
 		pipex->limiter = argv[2];
 		pipex->cmd_count = argc - 4;
 		if (argc != 6)
-			exit(EXIT_FAILURE);
+		{
+			ft_putstr_fd("\033[31mError: Invalid arguments\n\e[0m", 2);
+			ft_putstr_fd(PIPEX_B_ERR, 2);
+			ft_putstr_fd(HD_ERR, 2);
+			exit (EXIT_FAILURE);
+		}
 		return (3);
 	}
 	else

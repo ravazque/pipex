@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 23:59:59 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/29 17:43:30 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 5)
 	{
 		ft_putstr_fd("\033[31mError: Invalid arguments\n\e[0m", 2);
-		ft_putstr_fd("Usage: ./pipex <file1> <cmd1> <cmd2> ... <file2>\n", 2);
-		ft_putstr_fd("       ./pipex here_doc <LIMITER> <cmd> ... <file>\n",
-			2);
+		ft_putstr_fd(PIPEX_B_ERR, 2);
+		ft_putstr_fd(HD_ERR, 2);
 		return (EXIT_FAILURE);
 	}
 	init_pipex(&pipex, argc, argv);

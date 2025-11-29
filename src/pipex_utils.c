@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 19:52:11 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 23:48:18 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/29 17:53:19 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,21 @@ char	*find_executable(t_index *index, char *cmd)
 	return (NULL);
 }
 
+static void	exec_err(t_index *index, char ***args, char *cmd)
+{
+	char	*tmp;
+	char	*msg;
+
+	tmp = ft_strjoin("Command not found: ", cmd);
+	msg = ft_strjoin(tmp, "\n");
+	free(tmp);
+	write(2, msg, ft_strlen(msg));
+	free(msg);
+	freeindex(index);
+	ft_clean_mem(args);
+	exit(127);
+}
+
 void	exec_cmd(t_index *index, char *cmd, char **envp)
 {
 	char	**args;
@@ -80,11 +95,7 @@ void	exec_cmd(t_index *index, char *cmd, char **envp)
 		args[i] = ft_cleaner(args[i], "\"\'");
 	path = find_executable(index, args[0]);
 	if (!path)
-	{
-		return (ft_putstr_fd("Command not found: ", 2), ft_putstr_fd(args[0],
-				2), ft_putchar_fd('\n', 2), freeindex(index),
-			ft_clean_mem(&args), exit(127), (void)0);
-	}
+		exec_err(index, &args, args[0]);
 	execve(path, args, envp);
 	perror("Exec failed");
 	free(path);

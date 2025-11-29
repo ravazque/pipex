@@ -6,7 +6,7 @@
 /*   By: ravazque <ravazque@student.42madrid.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 00:00:00 by ravazque          #+#    #+#             */
-/*   Updated: 2025/11/24 23:49:10 by ravazque         ###   ########.fr       */
+/*   Updated: 2025/11/29 17:43:11 by ravazque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define PIPEX_BONUS_H
 
 # include "../src/aux_libft/include/libft.h"
+
+# define PIPEX_B_ERR "Usage: ./pipex_bonus <file1> <cmd1> <cmd2> ... <file2>\n"
+# define HD_ERR "       ./pipex_bonus here_doc <LIMITER> <cmd1> <cmd2> <file> \
+[ << x | x >> outfile ]\n"
 
 typedef struct s_pipex
 {

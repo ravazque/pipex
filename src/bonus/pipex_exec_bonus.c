@@ -33,9 +33,14 @@ static char	**prepare_args(char *cmd, t_pipex *pipex)
 
 static void	handle_cmd_not_found(t_pipex *pipex, char **args)
 {
-	ft_putstr_fd("Command not found: ", 2);
-	ft_putstr_fd(args[0], 2);
-	ft_putchar_fd('\n', 2);
+	char	*msg;
+	char	*tmp;
+
+	tmp = ft_strjoin("Command not found: ", args[0]);
+	msg = ft_strjoin(tmp, "\n");
+	free(tmp);
+	write(2, msg, ft_strlen(msg));
+	free(msg);
 	free_pipex(pipex);
 	ft_clean_mem(&args);
 	exit(127);
